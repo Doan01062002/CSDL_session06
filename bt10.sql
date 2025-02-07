@@ -63,8 +63,11 @@ ORDER BY a.AppointmentDate ASC;
 SELECT 
     UPPER(CONCAT('BỆNH NHÂN: ', p.PatientName, ' - BÁC SĨ: ', d.DoctorName)) AS Info, 
     a.AppointmentDate, 
-    a.Diagnosis, 
-    a.Status
+    YEAR(a.AppointmentDate) AS AppointmentYear,
+    CASE 
+        WHEN a.AppointmentDate >= CURDATE() THEN 'Tương lai' 
+        ELSE 'Đã qua' 
+    END AS AppointmentStatus
 FROM Appointments a
 JOIN Patients p ON a.PatientID = p.PatientID
 JOIN Doctors d ON a.DoctorID = d.DoctorID
